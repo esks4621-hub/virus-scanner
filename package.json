@@ -1,0 +1,14 @@
+{
+  "name": "veriscript",
+  "version": "0.1.0",
+  "private": true,
+  "description": "VeriScript: read-only script scanning. This build covers the /unsupported page and the POST /scan rejection behavior.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

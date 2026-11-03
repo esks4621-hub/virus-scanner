@@ -1,0 +1,288 @@
+/* VeriScript — one stylesheet for every page.
+   Palette: lab-bench paper, green-black ink, verdigris for "this works",
+   slate for "not scanned" (deliberately not red: a rejection is information, not an alarm). */
+
+:root {
+  --paper: #e8ebe4;
+  --glass: #f6f7f2;
+  --ink: #16201b;
+  --ink-2: #48544d;
+  --rule: #bdc5b9;
+  --accent: #1f6b5e;
+  --accent-wash: #d3e3da;
+  --slate: #34424d;
+
+  /* System fonts only: no third-party requests, which suits a product that never fetches anything. */
+  --sans: "Avenir Next", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --measure: 68rem;
+  --radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #111713;
+    --glass: #1a221d;
+    --ink: #e6ebe4;
+    --ink-2: #a3afa7;
+    --rule: #2d3832;
+    --accent: #62c4ae;
+    --accent-wash: #1e3029;
+    --slate: #93a7b8;
+  }
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+a { color: var(--accent); text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+/* Keyboard focus on the hidden file input shows on the whole drop zone (separate rule: older browsers drop a whole rule over an unknown selector). */
+.slot:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+}
+
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.015em; margin: 0; }
+h1 { font-size: clamp(1.8rem, 1.2rem + 2vw, 2.5rem); font-weight: 650; }
+h2 { font-size: 1.6rem; font-weight: 650; }
+h3 { font-size: 1.15rem; font-weight: 650; margin-top: 2rem; }
+p { margin: 0.6rem 0 0; max-width: 68ch; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius);
+  z-index: 10;
+}
+.skip:focus { top: 0.75rem; }
+
+/* ---- page frame ---- */
+.site,
+main {
+  width: min(100% - 2 * var(--gutter), var(--measure));
+  margin-inline: auto;
+}
+
+header.site {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+.brand {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+header.site nav { display: flex; gap: 1.5rem; }
+header.site nav a { color: var(--ink); text-decoration: none; padding-block: 0.2rem; }
+header.site nav a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+header.site nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
+main { padding-block: clamp(2rem, 6vw, 4rem) 4rem; }
+
+footer.site {
+  padding-block: 2rem 3rem;
+  border-top: 1px solid var(--rule);
+}
+footer.site nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1rem; }
+
+/* ---- home ---- */
+.oneliner {
+  max-width: 36ch;
+  font-size: clamp(1.55rem, 0.9rem + 2.4vw, 2.35rem);
+  font-weight: 560;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.oneliner--small {
+  max-width: 62ch;
+  font-size: 0.98rem;
+  font-weight: 450;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.scan { margin-top: clamp(2rem, 5vw, 3.25rem); max-width: 46rem; }
+
+.slot {
+  display: grid;
+  gap: 0.35rem;
+  place-content: center;
+  min-height: 11rem;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--glass);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  transition: background-color 0.15s;
+}
+.slot:hover,
+.slot.is-over { background: var(--accent-wash); }
+.slot__main { font-size: 1.25rem; font-weight: 620; }
+.slot__sub { color: var(--ink-2); }
+
+/* a single scan line while a file is being read; it answers the drop, then stops */
+.slot.is-reading::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background: var(--accent);
+  animation: sweep 1s linear infinite;
+}
+@keyframes sweep { to { top: 100%; } }
+
+.hint { color: var(--ink-2); font-size: 0.95rem; max-width: none; margin-top: 0.85rem; }
+
+.result { margin-top: 1.25rem; }
+.result > .hint { margin: 0; }
+
+.card {
+  background: var(--glass);
+  border: 1px solid var(--rule);
+  border-left: 6px solid var(--slate);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem 1.25rem;
+  animation: arrive 0.18s ease-out;
+}
+.card--ok { border-left-color: var(--accent); }
+@keyframes arrive { from { opacity: 0; transform: translateY(4px); } }
+
+.card h3 { margin: 0; font-size: 1.05rem; }
+.card__msg { font-size: 1.1rem; font-weight: 560; margin-top: 0.5rem; }
+.card dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.25rem; margin: 1rem 0 0; }
+.card dt { color: var(--ink-2); }
+.card dd { margin: 0; }
+.mono { font-family: var(--mono); font-size: 0.95em; }
+
+/* ---- /unsupported ---- */
+.page-head p.lede,
+.lede { font-size: 1.15rem; color: var(--ink-2); }
+
+.toc ul { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; list-style: none; margin: 1.5rem 0 0; padding: 0; }
+
+.section { margin-top: 4rem; scroll-margin-top: 1rem; }
+.section--lead { margin-top: 3rem; }
+.section > h2 + p { margin-top: 0.75rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 1.1rem 0 0; padding: 0; }
+.chips li {
+  background: var(--accent-wash);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.2rem 0.7rem;
+  font-weight: 560;
+}
+
+table.lang { width: 100%; max-width: 48rem; border-collapse: collapse; margin-top: 2rem; }
+table.lang caption {
+  text-align: left;
+  font-size: 1.05rem;
+  font-weight: 650;
+  padding-bottom: 0.5rem;
+}
+table.lang thead th {
+  text-align: left;
+  font-weight: 450;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  padding: 0.3rem 0.75rem 0.3rem 0;
+  border-bottom: 1.5px solid var(--ink);
+}
+table.lang tbody th,
+table.lang tbody td {
+  text-align: left;
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+table.lang tbody th { font-weight: 560; width: 46%; }
+table.lang tbody td { color: var(--ink-2); }
+
+.pairs { margin: 1.25rem 0 0; max-width: 48rem; }
+.pair {
+  display: grid;
+  grid-template-columns: minmax(10rem, 17rem) 1fr;
+  gap: 0.2rem 1.5rem;
+  padding-block: 0.7rem;
+  border-top: 1px solid var(--rule);
+}
+.pair:last-child { border-bottom: 1px solid var(--rule); }
+.pair dt { font-weight: 600; }
+.pair dd { margin: 0; color: var(--ink-2); }
+
+.ftype { margin-top: 1.75rem; max-width: 48rem; }
+.ftype h3 { margin: 0; font-size: 1.05rem; }
+.ftype p { margin-top: 0.4rem; color: var(--ink-2); }
+.exts { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0.6rem 0 0; padding: 0; }
+
+.plain { columns: 2 14rem; margin: 1rem 0 0; padding-left: 1.2rem; max-width: 40rem; }
+.callout {
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 40rem) {
+  .pair { grid-template-columns: 1fr; }
+  .card dl { grid-template-columns: 1fr; gap: 0; }
+  .card dd { margin-bottom: 0.6rem; }
+  table.lang tbody th { width: 52%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot.is-reading::after { animation: none; top: 0; }
+  .card { animation: none; }
+  .slot { transition: none; }
+}
